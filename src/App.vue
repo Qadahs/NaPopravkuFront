@@ -1,5 +1,6 @@
 <template>
   <v-app>
+
     <v-card
         class="mx-auto overflow-hidden rounded-0"
         width="100%"
@@ -78,7 +79,8 @@ export default {
       if(!this.isAuth){
        this.navigate('/login')
       }
-    }
+    },
+
   }
 }
 </script>
