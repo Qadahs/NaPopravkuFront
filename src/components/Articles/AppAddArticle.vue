@@ -85,6 +85,7 @@ export default {
           this.dialog=false
           this.selectedTags=[]
           this.text=''
+          this.errors=[]
         }).catch(err=>{
           console.log(err)
         })

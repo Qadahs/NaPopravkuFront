@@ -14,8 +14,13 @@
         <v-list-item-content>
           <v-list-item-title>Автор: {{article.user.login}}</v-list-item-title>
           <v-list-item-title>Дата: {{article.article.created_at}}</v-list-item-title>
+          <p>Tags</p>
+          <ul>
+            <li v-for="tag in article.article.tags" :key="tag">{{tag.title}}</li>
+          </ul>
         </v-list-item-content>
       </v-list-item>
+
     </v-card-actions>
   </v-card>
 </template>
