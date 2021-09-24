@@ -16,7 +16,7 @@
           <v-list-item-title>Дата: {{article.article.created_at}}</v-list-item-title>
           <p>Tags</p>
           <ul>
-            <li v-for="tag in article.article.tags" :key="tag">{{tag.title}}</li>
+            <li v-for="tag in article.article.tags" :key="tag.title">{{tag.title}}</li>
           </ul>
         </v-list-item-content>
       </v-list-item>
