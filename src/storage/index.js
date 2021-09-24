@@ -7,7 +7,31 @@ export default new Vuex.Store({
         storage:window.sessionStorage,
     })],
     state:{
+        isAuth:false,
+        token:'',
+        user:null
     },
     mutations: {
+        setUser(state,user){
+            state.isAuth=true
+            state.token=user.token
+            state.user=user.user
+        },
+        logout(){
+            this.state.isAuth=false
+            this.state.token=''
+            this.state.user=null
+        }
+    },
+    getters:{
+        getToken(state){
+            return state.token
+        },
+        getAuth(state){
+            return state.isAuth
+        },
+        getUser(state){
+            return state.user
+        }
     }
 })

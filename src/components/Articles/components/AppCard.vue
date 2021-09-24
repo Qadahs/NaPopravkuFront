@@ -6,24 +6,31 @@
       max-width="90%"
   >
     <v-card-text class="text-h5 font-weight-bold">
-      "Turns out semicolon-less style is easier and safer in TS because most gotcha edge cases are type invalid as well."
+      "{{article.article.text}}"
     </v-card-text>
 
     <v-card-actions>
       <v-list-item class="grow">
         <v-list-item-content>
-          <v-list-item-title>Evan You</v-list-item-title>
+          <v-list-item-title>Автор: {{article.user.login}}</v-list-item-title>
+          <v-list-item-title>Дата: {{article.article.created_at}}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-card-actions>
-    <p>Hello</p>
   </v-card>
 </template>
 
 <script>
+
+
 export default {
+  props:['article'],
   data: () => ({
     //
   }),
+  mounted() {
+  },
+  methods:{
+  }
 }
 </script>

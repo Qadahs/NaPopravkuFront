@@ -7,7 +7,7 @@
         height="100%"
     >
       <v-app-bar
-          color="deep-purple"
+          color="blue"
           dark
           width="100%"
       >
@@ -15,17 +15,9 @@
 
         <v-toolbar-title>Цитатник</v-toolbar-title>
         <v-spacer></v-spacer>
-
-        <v-btn
-            class="ma-16 float-right"
-            small
-            color="indigo"
-        >
-          <v-icon>mdi-pencil</v-icon>
-          Добавить цитату
-
-        </v-btn>
-
+        <div v-if="$store.getters.getAuth">
+        <app-add-article :dialog="dialog"></app-add-article>
+        </div>
       </v-app-bar>
 
       <v-navigation-drawer
@@ -54,7 +46,8 @@
               <v-list-item-icon>
                 <v-icon>mdi-account</v-icon>
               </v-list-item-icon>
-                <v-list-item-title @click="routeToAccount">Аккаунт</v-list-item-title>
+                <v-list-item-title @click="routeToAccount">{{ this.$root.auth()?'Выйти':'Авторизоваться' }}</v-list-item-title>
+
             </v-list-item>
           </v-list-item-group>
         </v-list>
@@ -67,20 +60,32 @@
 
 <script>
 import RouteMixin from "./mixins/RouteMixin";
+import AppAddArticle from "./components/Articles/AppAddArticle";
 export default {
   mixins:[RouteMixin],
   data: () => ({
     drawer: false,
     group: null,
-    isAuth:false,
+    dialog:false,
   }),
+  mounted() {
+
+  },
   methods:{
     routeToAccount(){
-      if(!this.isAuth){
+      if(!this.$root.auth()){
        this.navigate('/login')
       }
+      if(this.$root.auth()){
+        this.$store.commit('logout')
+      }
     },
-
+    showDialog(){
+      this.dialog=true;
+    }
+  },
+  components:{
+    AppAddArticle,
   }
 }
 </script>
