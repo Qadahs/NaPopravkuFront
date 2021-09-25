@@ -16,7 +16,7 @@
         <v-toolbar-title>Цитатник</v-toolbar-title>
         <v-spacer></v-spacer>
         <div v-if="$store.getters.getAuth">
-        <app-add-article :dialog="dialog"></app-add-article>
+        <app-add-article :updatePageContent='updatePageContent' :dialog="dialog"></app-add-article>
         </div>
       </v-app-bar>
 
@@ -41,6 +41,14 @@
                 <v-list-item-title @click="navigate('/')">Главная страница</v-list-item-title>
 
             </v-list-item>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-filter-variant </v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title @click="navigate('/')">Лента</v-list-item-title>
+
+            </v-list-item>
 
             <v-list-item>
               <v-list-item-icon>
@@ -59,7 +67,7 @@
 </template>
 
 <script>
-import RouteMixin from "./mixins/RouteMixin";
+import RouteMixin from "./mixins/Route";
 import AppAddArticle from "./components/Articles/AppAddArticle";
 export default {
   mixins:[RouteMixin],
@@ -82,6 +90,9 @@ export default {
     },
     showDialog(){
       this.dialog=true;
+    },
+    updatePageContent(){
+      console.log('updatePageContent')
     }
   },
   components:{

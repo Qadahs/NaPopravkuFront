@@ -11,6 +11,16 @@ const routes = [
     component: ()=>import('../components/Articles/AppArticleList')
   },
   {
+    path:'/article/:slug',
+    name:'Article',
+    component: ()=>import('../components/Articles/AppArticle')
+  },
+  {
+    path:'/user/:login',
+    name:'User',
+    component: ()=>import('../components/User/AppUser')
+  },
+  {
     path: '/login',
     name: 'Login',
     component: ()=>import('../components/Authentication/AppLogin')

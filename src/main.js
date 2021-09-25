@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
-import router from './router/index'
+import router from './router/router'
 import store from './storage/index'
 import axios from "axios";
+// Define domain of backend server
+const domain = 'http://localhost'
+
 Vue.config.productionTip = false
 Vue.create
 new Vue({
@@ -19,7 +22,6 @@ new Vue({
           tryAuth(){
                if(this.$store.getters.getToken)
                {
-
                   axios.get('http://localhost/api/auth',{
                       headers:{
                           'Authorization':`Bearer ${this.$store.getters.getToken}`
@@ -37,3 +39,4 @@ new Vue({
           }
       }
 }).$mount('#app')
+export default domain;

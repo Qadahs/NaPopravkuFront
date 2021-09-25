@@ -1,61 +1,64 @@
 <template>
-  <v-row justify="center">
-    <v-dialog
-        v-model="dialog"
-        persistent
-        max-width="40%"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-            color="primary"
-            dark
-            v-bind="attrs"
-            v-on="on"
-            class="ma-5"
-        >
-          <v-icon>mdi-pencil</v-icon>
-          Добавить цитату
-        </v-btn>
-      </template>
-      <v-card>
-        <v-alert v-for="error in errors" type="warning" :key="error">{{ error }}</v-alert>
-        <v-card-title class="text-h5">
-          Добавить новую цитату
-        </v-card-title>
-        <v-container>
-          <v-form class="ma-auto width">
-            <v-textarea
-                v-model="text"
-            ></v-textarea>
-          </v-form>
-          <v-select
-              v-model="selectedTags"
-              :items="tags"
-              chips
-              label="Теги"
-              multiple
-          ></v-select>
-        </v-container>
-        <v-card-actions>
-          <v-spacer></v-spacer>
+
+    <v-row justify="center">
+      <v-dialog
+          v-model="dialog"
+          max-width="40%"
+          no-click-animation
+
+      >
+        <template v-slot:activator="{ on, attrs }">
           <v-btn
-              color="green darken-1"
-              text
-              @click="addArticle"
+              color="primary"
+              dark
+              v-bind="attrs"
+              v-on="on"
+              class="ma-5"
           >
-           Добавить
+            <v-icon>mdi-pencil</v-icon>
+            Добавить цитату
           </v-btn>
-          <v-btn
-              color="green darken-1"
-              text
-              @click="dialog = false"
-          >
-            Отмена
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-row>
+        </template>
+        <v-card>
+          <v-alert v-for="error in errors" type="warning" :key="error">{{ error }}</v-alert>
+          <v-card-title class="text-h5">
+            Добавить новую цитату
+          </v-card-title>
+          <v-container>
+            <v-form class="ma-auto width">
+              <v-textarea
+                  v-model="text"
+              ></v-textarea>
+            </v-form>
+            <v-select
+                v-model="selectedTags"
+                :items="tags"
+                chips
+                label="Теги"
+                multiple
+            ></v-select>
+          </v-container>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="green darken-1"
+                text
+                @click="addArticle"
+            >
+             Добавить
+            </v-btn>
+            <v-btn
+                color="green darken-1"
+                text
+                @click="dialog = false"
+            >
+              Отмена
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
+
 </template>
 
 <script>
@@ -73,6 +76,7 @@ export default {
   },
   methods:{
     addArticle(){
+      this.$emit('updatePageContent')
       if(this.validation())
       {
         let data={
@@ -86,6 +90,8 @@ export default {
           this.selectedTags=[]
           this.text=''
           this.errors=[]
+          this.$root.$refs.updateContent()
+
         }).catch(err=>{
           console.log(err)
         })

@@ -23,7 +23,7 @@
 
 <script>
 import axios from "axios";
-import RouteMixin from "../../mixins/RouteMixin";
+import RouteMixin from "../../mixins/Route";
 
 
 

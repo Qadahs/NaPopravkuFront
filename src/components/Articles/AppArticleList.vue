@@ -1,10 +1,17 @@
 <template>
-  <div>
-    <v-container class="grey lighten-5" >
-      <v-row no-gutters>
+  <v-container v-if="isLoading" fill-height fluid style="width: 150px" >
+    <v-progress-circular
+        :size="150"
+        color="primary"
+        indeterminate
+    ></v-progress-circular>
+  </v-container>
+  <div v-else>
+    <v-container class="grey lighten-5 justify-center" style="max-width: 800px;">
+      <v-row no-gutters justify="space-around">
         <template
             v-for="(article,idx) in articles">
-          <v-col :key="article.id">
+          <v-col offset="0"  :key="article.id">
             <app-card :article="article" class="mb-3"></app-card>
           </v-col>
           <v-responsive
@@ -17,8 +24,6 @@
     </v-container>
     <div class="text-center">
       <v-pagination
-          v-if="!loading"
-          @input="routeToPage"
           v-model="currentPage"
           :length="pagesCount"
           circle
@@ -29,44 +34,67 @@
 
 <script>
 import AppCard from "./components/AppCard";
-import axios from 'axios';
-import RouteMixin from "../../mixins/RouteMixin";
+import RouteMixin from "../../mixins/Route";
+import Request from '../../mixins/Request'
+
 export default {
   name: "AppLayout",
-  mixins:[RouteMixin],
-  data(){
+  mixins: [RouteMixin, Request],
+  props:{
+    loadDefault:{
+      required:false,
+      default:true
+    }
+  },
+  data() {
     return {
-      articles:[],
-      pagesCount:1,
-      currentPage:1,
-      loading:true,
+      articles: [],
+      pagesCount: 1,
+      currentPage: 1,
+      isLoading:true
     }
   },
   mounted() {
-   axios.get('http://localhost/api/article').then(({data})=>{
-     this.loading=false;
-     this.parseArticle(data)}
-   )
-    axios.get('http://localhost/api/article/count').then(({data})=>{this.pagesCount=data.data.count}).catch(err=>{
-      console.log(err)})
+    if(this.loadDefault)
+    {
+      // Getting main page articles
+      this.request('article')
+          .then(
+              ({data}) => {
+                this.articles = data.data.articles
+                this.isLoading=false
+              })
+          .catch(error => {
+            console.log(error)
+          })
+      // Getting pages count
+      this.request('article/count')
+          .then(
+              ({data}) => {
+                this.pagesCount = data.data.count;
+              })
+          .catch(error => {
+            console.log(error)
+          })
+    }
+
+  },
+  /**
+   * We need reference to updateContent function to
+   * update content from other components such as
+   * filter component or user component
+   */
+  created() {
+    this.$root.$refs.updateContent = this.updateContent;
   },
   methods: {
-    parseArticle(data)
-    {
-      if(!data.errors){
-        this.articles=data.data.articles
-      }
-    },
-    routeToPage(){
-      axios.get(`http://localhost/api/article?page=${this.currentPage}`).then(({data})=>{this.parseArticle(data)}).catch(err=>{
-        console.log(err)})
+    updateContent(data) {
+      this.articles = data
     }
   },
-  components:{
+  components: {
     AppCard
   },
-
-
 }
 </script>
 
