@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="isLoading" fill-height fluid style="width: 150px" >
+  <v-container v-if="isLoading" fill-height fluid style="width: 150px">
     <v-progress-circular
         :size="150"
         color="primary"
@@ -7,11 +7,12 @@
     ></v-progress-circular>
   </v-container>
   <div v-else>
+
     <v-container class="grey lighten-5 justify-center" style="max-width: 800px;">
       <v-row no-gutters justify="space-around">
         <template
             v-for="(article,idx) in articles">
-          <v-col offset="0"  :key="article.id">
+          <v-col offset="0" :key="article.id">
             <app-card :article="article" class="mb-3"></app-card>
           </v-col>
           <v-responsive
@@ -24,6 +25,7 @@
     </v-container>
     <div class="text-center">
       <v-pagination
+          @input="loadPage"
           v-model="currentPage"
           :length="pagesCount"
           circle
@@ -40,10 +42,10 @@ import Request from '../../mixins/Request'
 export default {
   name: "AppLayout",
   mixins: [RouteMixin, Request],
-  props:{
-    loadDefault:{
-      required:false,
-      default:true
+  props: {
+    loadDefault: {
+      required: false,
+      default: true,
     }
   },
   data() {
@@ -51,33 +53,31 @@ export default {
       articles: [],
       pagesCount: 1,
       currentPage: 1,
-      isLoading:true
+      isLoading: true,
     }
   },
   mounted() {
-    if(this.loadDefault)
-    {
+    if (this.loadDefault) {
+      this.loadPage()
+      console.log("deff")
+      console.log(this.loadContent)
       // Getting main page articles
-      this.request('article')
-          .then(
-              ({data}) => {
-                this.articles = data.data.articles
-                this.isLoading=false
-              })
-          .catch(error => {
-            console.log(error)
-          })
-      // Getting pages count
-      this.request('article/count')
-          .then(
-              ({data}) => {
-                this.pagesCount = data.data.count;
-              })
-          .catch(error => {
-            console.log(error)
-          })
+      // this.request(`article`)
+      //     .then(
+      //         ({data}) => {
+      //           this.articles = data.data.articles
+      //           this.pagesCount=data.data.pagesCount
+      //           this.isLoading=false
+      //         })
+      //     .catch(error => {
+      //       console.log(error)
+      //     })
+    } else {
+      this.loadContent = this.$root.$refs.loadContent
+      console.log("not deff")
+      console.log(this.$root.$refs.loadContent)
+      this.loadPage()
     }
-
   },
   /**
    * We need reference to updateContent function to
@@ -85,11 +85,31 @@ export default {
    * filter component or user component
    */
   created() {
-    this.$root.$refs.updateContent = this.updateContent;
+    if (!this.$root.$refs.loadContent) {
+      this.$root.$refs.loadContent = this.loadContent;
+    }
+    this.$root.$refs.loadPage = this.loadPage;
+
   },
+  computed: {},
   methods: {
-    updateContent(data) {
-      this.articles = data
+    getCurrentPage() {
+      if (this.$route.params.page) return this.$route.params.page
+      return 1
+    },
+    loadContent(page) {
+      // this.isLoading=true
+      return this.request(`article?page=${page}`)
+    },
+    loadPage() {
+      this.isLoading = true
+      let content = this.loadContent(this.currentPage)
+      content.then(({data}) => {
+        console.log(data)
+        this.articles = data.data.articles
+        this.pagesCount = data.data.pagesCount
+        this.isLoading = false
+      })
     }
   },
   components: {

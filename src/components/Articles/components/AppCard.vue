@@ -38,7 +38,7 @@
             v-for="tag in article.article.tags"
             :key="tag.id"
             class="ma-2"
-            @click="routeToUser"
+            @click.stop="routeToSearch(tag.id)"
         >
           {{ tag.title }}
         </v-chip>
@@ -64,6 +64,9 @@ export default {
     },
     routeToUser(){
       this.$router.push({name:'User',params:{login:this.article.user.login,user:this.article.user}})
+    },
+    routeToSearch(tag){
+      this.$router.push({name:'Search',params:{tag:tag}})
     }
   },
   computed:{

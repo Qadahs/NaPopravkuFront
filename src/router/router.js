@@ -7,8 +7,12 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
     component: ()=>import('../components/Articles/AppArticleList')
+  },
+  {
+    path: '/search',
+    name:'Search',
+    component: ()=>import('../components/Articles/AppCategoryArticle')
   },
   {
     path:'/article/:slug',
