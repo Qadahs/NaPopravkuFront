@@ -3,7 +3,6 @@ export default {
         async navigate(route){
            await this.$router.push(route).catch(()=>{})
         },
-        // Из-за того, что у стандартных ошибок laravel другой формат, приходится их парсить по разному.
         parseErrors(errors)
         {
            let errorsArray = [];

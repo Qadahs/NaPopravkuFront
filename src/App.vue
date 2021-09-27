@@ -41,12 +41,13 @@
                 <v-list-item-title @click="navigate('/')">Главная страница</v-list-item-title>
 
             </v-list-item>
-            <v-list-item>
+            <v-list-item v-if="$store.getters.getAuth && user.id!=$store.getters.getUser.id" >
               <v-list-item-icon>
                 <v-icon>mdi-filter-variant </v-icon>
               </v-list-item-icon>
 
-              <v-list-item-title @click="navigate('/follower')">Лента</v-list-item-title>
+              <v-list-item-title
+                                 @click="navigate('/follower')">Лента</v-list-item-title>
 
             </v-list-item>
 

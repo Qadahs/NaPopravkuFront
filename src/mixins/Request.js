@@ -1,12 +1,12 @@
 import axios from 'axios';
-//import domain from '../main'
+import domain from '../main'
 export default {
     methods:{
        async request(path,type='GET',data={},header={}){
             const config = {
                 headers:header
             }
-            const uri = `http://localhost/api/${path}`
+            const uri = `${domain}/api/${path}`
             switch (type)
             {
                 case 'POST':

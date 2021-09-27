@@ -23,7 +23,7 @@
         </template>
       </v-row>
     </v-container>
-    <div class="text-center">
+    <div class="text-center" v-if="!noContent">
       <v-pagination
           @input="loadPage"
           v-model="currentPage"
@@ -65,11 +65,6 @@ export default {
       this.loadPage()
     }
   },
-  /**
-   * We need reference to updateContent function to
-   * update content from other components such as
-   * filter component or user component
-   */
   created() {
     if (!this.$root.$refs.loadContent) {
       this.$root.$refs.loadContent = this.loadContent;
@@ -80,7 +75,6 @@ export default {
   computed: {},
   methods: {
     loadContent(page) {
-      // this.isLoading=true
       return this.request(`article?page=${page}`)
     },
     loadPage() {
