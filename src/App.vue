@@ -16,7 +16,7 @@
         <v-toolbar-title>Цитатник</v-toolbar-title>
         <v-spacer></v-spacer>
         <div v-if="$store.getters.getAuth">
-        <app-add-article :updatePageContent='updatePageContent' :dialog="dialog"></app-add-article>
+        <app-add-article :dialog="dialog"></app-add-article>
         </div>
       </v-app-bar>
 
@@ -46,7 +46,7 @@
                 <v-icon>mdi-filter-variant </v-icon>
               </v-list-item-icon>
 
-              <v-list-item-title @click="navigate('/')">Лента</v-list-item-title>
+              <v-list-item-title @click="navigate('/follower')">Лента</v-list-item-title>
 
             </v-list-item>
 
@@ -88,12 +88,6 @@ export default {
         this.$store.commit('logout')
       }
     },
-    showDialog(){
-      this.dialog=true;
-    },
-    updatePageContent(){
-      console.log('updatePageContent')
-    }
   },
   components:{
     AppAddArticle,

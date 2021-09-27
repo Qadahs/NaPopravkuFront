@@ -1,14 +1,16 @@
 <template>
 <div>
-  <v-select
-      v-model="selectedTags"
-      :items="tags"
-      chips
-      label="Теги"
-      multiple
-      @input="updateContent"
-  ></v-select>
-  <h1>navigation</h1>
+  <v-container class="justify-center" style="max-width: 800px">
+    <v-select
+        v-model="selectedTags"
+        :items="tags"
+        chips
+        label="Теги"
+        multiple
+        @input="updateContent"
+    ></v-select>
+  </v-container>
+
   <app-article-list :loadDefault="false"></app-article-list>
 </div>
 </template>
@@ -28,7 +30,15 @@ export default {
   methods:{
     updateContent(){
       this.$root.$refs.loadPage()
-      console.log("here");
+    },
+    injectTag(tag)
+    {
+      if(!this.selectedTags.includes(tag))
+      {
+        this.selectedTags.push(tag)
+        this.updateContent()
+      }
+
     }
   },
   created() {
@@ -43,7 +53,6 @@ export default {
         },
         page:page
       }
-      console.log(JSON.stringify(body))
       return this.request('article/filter', 'POST', body)
     }.bind(this)
   },
@@ -51,12 +60,10 @@ export default {
     AppArticleList
   },
   mounted() {
-
+    this.$root.$refs.injectTag = this.injectTag
     this.request('tags')
         .then(
             ({data}) => {
-              console.log("TAGS")
-              console.log(data)
               this.tags=data.data.tags;
             })
         .catch(error => {

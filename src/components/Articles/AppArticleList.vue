@@ -7,8 +7,8 @@
     ></v-progress-circular>
   </v-container>
   <div v-else>
-
     <v-container class="grey lighten-5 justify-center" style="max-width: 800px;">
+      <h1 v-if="noContent" class="d-flex justify-center">Цитат не найдено</h1>
       <v-row no-gutters justify="space-around">
         <template
             v-for="(article,idx) in articles">
@@ -54,28 +54,14 @@ export default {
       pagesCount: 1,
       currentPage: 1,
       isLoading: true,
+      noContent:false,
     }
   },
   mounted() {
     if (this.loadDefault) {
       this.loadPage()
-      console.log("deff")
-      console.log(this.loadContent)
-      // Getting main page articles
-      // this.request(`article`)
-      //     .then(
-      //         ({data}) => {
-      //           this.articles = data.data.articles
-      //           this.pagesCount=data.data.pagesCount
-      //           this.isLoading=false
-      //         })
-      //     .catch(error => {
-      //       console.log(error)
-      //     })
     } else {
       this.loadContent = this.$root.$refs.loadContent
-      console.log("not deff")
-      console.log(this.$root.$refs.loadContent)
       this.loadPage()
     }
   },
@@ -93,10 +79,6 @@ export default {
   },
   computed: {},
   methods: {
-    getCurrentPage() {
-      if (this.$route.params.page) return this.$route.params.page
-      return 1
-    },
     loadContent(page) {
       // this.isLoading=true
       return this.request(`article?page=${page}`)
@@ -105,10 +87,14 @@ export default {
       this.isLoading = true
       let content = this.loadContent(this.currentPage)
       content.then(({data}) => {
-        console.log(data)
         this.articles = data.data.articles
         this.pagesCount = data.data.pagesCount
         this.isLoading = false
+        this.noContent=false;
+      }).catch(()=>{
+        this.articles=[]
+        this.isLoading = false
+        this.noContent=true
       })
     }
   },

@@ -1,12 +1,12 @@
 import axios from 'axios';
-import domain from '../main'
+//import domain from '../main'
 export default {
     methods:{
        async request(path,type='GET',data={},header={}){
             const config = {
                 headers:header
             }
-            const uri = `${domain}/api/${path}`
+            const uri = `http://localhost/api/${path}`
             switch (type)
             {
                 case 'POST':
@@ -28,7 +28,7 @@ export default {
             }
         },
        async authRequest(path,type='GET',data={},header={}){
-            header.Authorization = `Bearer this.$store.getters.getToken`
+            header.Authorization = `Bearer ${this.$store.getters.getToken}`
             return this.request(path,type,data,header)
         }
     }

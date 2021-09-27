@@ -28,8 +28,8 @@ new Vue({
                       }
                   }).then(({data})=>{
                       this.$store.commit('setUser',{token:this.$store.getters.getToken,user:data.data.user})
-                  }).catch(({response})=>{
-                      console.log(response.message)
+                  }).catch(()=>{
+
                   })
                }
 

@@ -38,7 +38,7 @@
             v-for="tag in article.article.tags"
             :key="tag.id"
             class="ma-2"
-            @click.stop="routeToSearch(tag.id)"
+            @click.stop="tagClick(tag.id)"
         >
           {{ tag.title }}
         </v-chip>
@@ -57,16 +57,28 @@ import Route from "../../../mixins/Route"
 
 export default {
   mixins:[Route],
-  props:['article'],
+  props:{
+    article:{
+      required:true
+    },
+    default:{
+      default:true
+    }
+  },
   methods:{
     routeToArticle(){
-      this.$router.push({name:'Article',params:{slug:"test",article:this.article}})
+      this.$router.push({name:'Article',params:{id:this.article.article.id,article:this.article}}).catch(()=>{})
     },
     routeToUser(){
-      this.$router.push({name:'User',params:{login:this.article.user.login,user:this.article.user}})
+      this.$router.push({name:'User',params:{login:this.article.user.login,user:this.article.user}}).catch(()=>{})
     },
-    routeToSearch(tag){
-      this.$router.push({name:'Search',params:{tag:tag}})
+    tagClick(tag){
+      if( this.$root.$refs.injectTag)
+      {
+        this.$root.$refs.injectTag(tag)
+      }
+
+      this.$router.push({name:'Search',params:{tag:tag}}).catch(()=>{})
     }
   },
   computed:{
@@ -74,6 +86,6 @@ export default {
     {
       return this.article.user.login.charAt(0).toUpperCase()
     }
-  }
+  },
 }
 </script>

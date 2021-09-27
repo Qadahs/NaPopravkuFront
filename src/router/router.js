@@ -10,12 +10,17 @@ const routes = [
     component: ()=>import('../components/Articles/AppArticleList')
   },
   {
+    path: '/follower',
+    name:'Follower',
+    component: ()=>import('../components/Articles/AppFollower')
+  },
+  {
     path: '/search',
     name:'Search',
     component: ()=>import('../components/Articles/AppCategoryArticle')
   },
   {
-    path:'/article/:slug',
+    path:'/article/:id',
     name:'Article',
     component: ()=>import('../components/Articles/AppArticle')
   },
